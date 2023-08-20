@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const UserSchema = new mongoode.Schema(
+const UserSchema = new mongoose.Schema(
   {
     //ユーザ名
     username: {
@@ -62,3 +62,6 @@ const UserSchema = new mongoode.Schema(
   },
   { timestamps: true }
 )
+
+//UserSchemaとしてmogooseのモデル情報をエクスポート
+module.exports = mongoose.model('User', UserSchema)

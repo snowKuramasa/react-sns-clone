@@ -22,6 +22,8 @@ mongoose
   })
 
 //ミドルウェア
+//expressの送受信するボディをjsonで扱うように指定
+app.use(express.json())
 //ベースURIの割り当て
 app.use('/api/users', usersRouter)
 app.use('/api/auth', authRouter)
