@@ -1,11 +1,25 @@
 const express = require('express')
 const app = express()
 const PORT = 3000
+const mongoose = require('mongoose')
+
+//dotenvライブラリで.envファイル読み込み
+require('dotenv').config()
 
 //ルーター呼び出し
 const usersRouter = require('./routes/users')
 const authRouter = require('./routes/auth')
 const postsRouter = require('./routes/posts')
+
+//mongodb接続
+mongoose
+  .connect(process.env.MONGOURL)
+  .then(() => {
+    console.log('DBと接続中・・・')
+  })
+  .catch((err) => {
+    console.log(err)
+  })
 
 //ミドルウェア
 //ベースURIの割り当て
