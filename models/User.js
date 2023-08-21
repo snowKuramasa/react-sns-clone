@@ -37,12 +37,12 @@ const UserSchema = new mongoose.Schema(
     //フォローしてくれている人
     followers: {
       type: Array,
-      default: '',
+      default: [],
     },
     //フォローしている人
     followings: {
       type: Array,
-      default: '',
+      default: [],
     },
     //管理者かどうか
     isAdmin: {
