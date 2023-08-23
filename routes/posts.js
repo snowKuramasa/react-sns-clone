@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const Post = require('../models/Post')
+const User = require('../models/User')
 
 //server.jsのURIをルートとしている
 //投稿を作成する
@@ -82,6 +83,30 @@ router.put('/:id/like', async (req, res) => {
     }
   } catch (err) {
     return res.status(500).json(err)
+  }
+})
+
+//タイムラインの投稿を取得
+//APIのURIを設定する際に「/{文字列}」とすると文字列にはパラメータが入ることになるので注意
+//以下の場合、/timeline とした場合、上記に記載している特定の投稿取得APIと重複することになる
+router.get('/timeline/all', async (req, res) => {
+  try {
+    const currrentUser = await User.findById(req.body.userId)
+
+    //自分自身の投稿を取得
+    const userPosts = await Post.find({ userId: currrentUser._id })
+
+    //フォローしているユーザーの投稿を全て取得
+    //Promise.allでcurrentUserの返却を待ってから処理を実行
+    const friendPosts = await Promise.all(
+      currrentUser.followings.map((friendId) => {
+        return Post.find({ userId: friendId })
+      })
+    )
+
+    return res.status(200).json(userPosts.concat(...friendPosts))
+  } catch (err) {
+    res.status(500).json(err)
   }
 })
 
